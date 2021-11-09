@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddUserInput from "./Components/AddUserInput";
 import Card from "./Components/UI/Card";
 import CreateToDoList from "./Components/CreateToDoList";
@@ -8,6 +8,15 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [todoEditing, setTodoEditing] = useState(null);
   const [editingText, setEditingText] = useState("");
+  useEffect(() => {
+    const _todos = localStorage.getItem("todos");
+    const loadedTodos = JSON.parse(_todos);
+    !loadedTodos ? setTodos([]) : setTodos(loadedTodos);
+  }, []);
+  useEffect(() => {
+    const _todos = JSON.stringify(todos);
+    localStorage.setItem("todos", _todos);
+  }, [todos]);
 
   const onFormSubmit = (inputValue) => {
     setTodos((prevState) => {
