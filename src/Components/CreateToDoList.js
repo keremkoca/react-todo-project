@@ -12,7 +12,7 @@ const CreateToDoList = (props) => {
             key={todo.id}
             todo={todo}
             classes={classes}
-            getId={props.getEditValue}
+            getEditValue={props.getEditValue}
             onSubmit={props.submitEdit}
           />
         ) : (

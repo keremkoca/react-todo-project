@@ -8,11 +8,10 @@ const EditTodoItem = (props) => {
       className={props.todo.status ? props.classes.checked : null}
       id={props.todo.id}
       key={props.todo.id}
-      isediting={props.isediting}
     >
       <input
         type="text"
-        onChange={(event) => props.getId(event.target.value)}
+        onChange={(event) => props.getEditValue(event.target.value)}
         value={props.editvalue}
       ></input>
       <Button className={Edit.button}>
