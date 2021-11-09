@@ -1,0 +1,16 @@
+.button {
+  background-color: transparent;
+  color: black;
+  border: none;
+  padding: 2px;
+  float: right;
+  box-shadow: none;
+  font-size: 25px;
+}
+.button:hover,
+.button:active {
+  color: blue;
+  transition-timing-function: linear;
+  transition-delay: 0.2s;
+  transform: scale(1.1);
+}

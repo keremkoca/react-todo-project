@@ -1,0 +1,16 @@
+.button {
+  width: auto;
+  background-color: transparent;
+  color: black;
+  padding: 0;
+  border: none;
+  float: right;
+  box-shadow: none;
+}
+.button :hover,
+.button:active {
+  color: rgb(210, 49, 49);
+  transition-timing-function: linear;
+  transition-delay: 0.2s;
+  transform: scale(1.1);
+}
