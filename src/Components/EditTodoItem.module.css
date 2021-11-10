@@ -1,0 +1,19 @@
+.li {
+  display: flex;
+  justify-content: space-between;
+}
+.li input {
+  height: 45px;
+  font-size: 28px;
+  border: 0.5px solid wheat;
+  float: left;
+}
+.li button {
+  display: flex;
+  margin-right: 55px;
+  background-color: transparent;
+  color: rgb(51, 51, 189);
+  border: none;
+  box-shadow: none;
+  font-size: 40px;
+}

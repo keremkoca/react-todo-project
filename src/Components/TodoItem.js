@@ -13,16 +13,6 @@ const TodoItem = (props) => {
       isediting={props.isediting}
     >
       {props.todo.text}
-      <Button type="button" className={Delete.button}>
-        {
-          <FontAwesomeIcon
-            name="deleteBtn"
-            onClick={() => props.onDelete(props.todo.id)}
-            id={props.todo.id}
-            icon={faTrashAlt}
-          />
-        }
-      </Button>
       <Button className={Edit.button}>
         {
           <FontAwesomeIcon
@@ -33,6 +23,17 @@ const TodoItem = (props) => {
           />
         }
       </Button>
+      <Button type="button" className={Delete.button}>
+        {
+          <FontAwesomeIcon
+            name="deleteBtn"
+            onClick={() => props.onDelete(props.todo.id)}
+            id={props.todo.id}
+            icon={faTrashAlt}
+          />
+        }
+      </Button>
+
       <Button className={Check.button}>
         {
           <FontAwesomeIcon

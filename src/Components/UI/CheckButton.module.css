@@ -2,10 +2,12 @@
   background-color: transparent;
   color: black;
   border: none;
-  padding: 2px;
+  padding: 0;
   float: right;
   box-shadow: none;
-  font-size: 25px;
+  font-size: inherit;
+  width: 40px;
+  height: 40px;
 }
 .button :hover,
 .button:active {

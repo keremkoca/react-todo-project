@@ -1,3 +1,4 @@
+import classes from "./EditTodoItem.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Edit from "./UI/EditButton.module.css";
@@ -5,7 +6,9 @@ import Button from "./UI/Button";
 const EditTodoItem = (props) => {
   return (
     <li
-      className={props.todo.status ? props.classes.checked : null}
+      className={`${props.todo.status ? props.classes.checked : null} ${
+        classes.li
+      }`}
       id={props.todo.id}
       key={props.todo.id}
     >
