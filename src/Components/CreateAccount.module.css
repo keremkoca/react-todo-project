@@ -1,0 +1,42 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  padding-top: 40px;
+}
+.Card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+}
+.Card h2 {
+  margin: 0;
+}
+.Card form {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 350px;
+}
+.Card form input {
+  height: 2rem;
+  font-size: 1.5rem;
+}
+.Card form label {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.button {
+  margin-top: 1rem;
+  background-color: rgb(57, 57, 167);
+  border-color: rgb(57, 57, 167);
+}
+.Link {
+  margin-top: 10px;
+}
+.error {
+  color: red;
+}

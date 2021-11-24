@@ -1,8 +1,11 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AddUserInput from "./Components/AddUserInput";
 import Card from "./Components/UI/Card";
 import CreateToDoList from "./Components/CreateToDoList";
+import Login from "./Components/Login";
+import CreateAccount from "./Components/CreateAccount";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -38,9 +41,8 @@ function App() {
   };
   const updateTodo = (todoItem) => {
     todoItem.status = !todoItem.status;
-    setTodos((prevState) => {
-      const updatedTodos = [...prevState];
-      return updatedTodos;
+    setTodos((todos) => {
+      return [...todos];
     });
   };
   const editHandler = (id) => {
@@ -56,24 +58,37 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div>
-        <h2>REACT TODO APP</h2>
-      </div>
-      <Card>
-        <AddUserInput onSubmit={onFormSubmit} />
-        <CreateToDoList
-          updateTodo={updateTodo}
-          onDelete={deleteTodo}
-          onEdit={setTodoEditing}
-          submitEdit={editHandler}
-          editId={todoEditing}
-          getEditValue={setEditingText}
-          editvalue={editingText}
-          todos={todos}
-        />
-      </Card>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<CreateAccount></CreateAccount>} path="/"></Route>
+        <Route element={<Login />} path="/login"></Route>
+        <Route
+          element={
+            <React.Fragment>
+              <div className="App">
+                <div>
+                  <h2>REACT TODO APP</h2>
+                </div>
+                <Card>
+                  <AddUserInput onSubmit={onFormSubmit} />
+                  <CreateToDoList
+                    updateTodo={updateTodo}
+                    onDelete={deleteTodo}
+                    onEdit={setTodoEditing}
+                    submitEdit={editHandler}
+                    editId={todoEditing}
+                    getEditValue={setEditingText}
+                    editvalue={editingText}
+                    todos={todos}
+                  />
+                </Card>
+              </div>
+            </React.Fragment>
+          }
+          path="/app"
+        ></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
