@@ -1,8 +1,8 @@
 import classes from "./EditTodoItem.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import Edit from "./UI/EditButton.module.css";
-import Button from "./UI/Button";
+import Edit from "../UI/EditButton.module.css";
+import Button from "../UI/Button";
 import { useState } from "react";
 const EditTodoItem = (props) => {
   const [editingText, setEditingText] = useState("");

@@ -1,7 +1,7 @@
-import Button from "./UI/Button";
-import Delete from "./UI/DeleteButton.module.css";
-import Edit from "./UI/EditButton.module.css";
-import Check from "./UI/CheckButton.module.css";
+import Button from "../UI/Button";
+import Delete from "../UI/DeleteButton.module.css";
+import Edit from "../UI/EditButton.module.css";
+import Check from "../UI/CheckButton.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 const TodoItem = (props) => {

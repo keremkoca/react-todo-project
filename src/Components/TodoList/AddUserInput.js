@@ -1,24 +1,21 @@
 import classes from "./AddUserInput.module.css";
-import Button from "./UI/Button";
-import submit from "./UI/SubmitButton.module.css";
-import { useState } from "react";
+import Button from "../UI/Button";
+import submit from "../UI/SubmitButton.module.css";
+import { useRef } from "react";
 
 const AddUserInput = (props) => {
-  const [inputValue, setInputValue] = useState("");
+  const inputValue = useRef("");
 
-  const onChangeInput = (event) => {
-    setInputValue(event.target.value);
-  };
   const onSubmitForm = (event) => {
     event.preventDefault();
     if (!inputValue) return;
-    props.onFormSubmit(inputValue);
-    setInputValue("");
+    props.onFormSubmit(inputValue.current.value);
+    inputValue.current.value = "";
   };
 
   return (
     <form onSubmit={onSubmitForm} className={classes.form}>
-      <input type="text" onChange={onChangeInput} value={inputValue}></input>
+      <input type="text" ref={inputValue}></input>
       <Button className={submit.button} type="submit">
         Add ToDo
       </Button>

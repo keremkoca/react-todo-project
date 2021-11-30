@@ -1,6 +1,6 @@
 import classes from "./Login.module.css";
-import Card from "./UI/Card";
-import Button from "./UI/Button";
+import Card from "../UI/Card";
+import Button from "../UI/Button";
 import React from "react";
 import { Link } from "react-router-dom";
 const Login = (props) => {
