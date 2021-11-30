@@ -2,18 +2,21 @@ import classes from "./CreateTodoList.module.css";
 import EditTodoItem from "./EditTodoItem";
 import TodoItem from "./TodoItem";
 import React from "react";
+import { useState } from "react";
 
 const CreateToDoList = (props) => {
+  const [todoEditing, setTodoEditing] = useState(null);
   return (
     <ul className={classes.ul}>
       {props.todos.map((todo) => {
-        return props.editId === todo.id ? (
+        return todoEditing === todo.id ? (
           <EditTodoItem
             key={todo.id}
             todo={todo}
+            setTodoEditing={setTodoEditing}
+            setTodos={props.setTodos}
+            todos={props.todos}
             classes={classes}
-            getEditValue={props.getEditValue}
-            onSubmit={props.submitEdit}
           />
         ) : (
           <TodoItem
@@ -21,7 +24,7 @@ const CreateToDoList = (props) => {
             todo={todo}
             classes={classes}
             updatetodo={props.updateTodo}
-            onEdit={props.onEdit}
+            setTodoEditing={setTodoEditing}
             onDelete={props.onDelete}
           />
         );
@@ -29,5 +32,4 @@ const CreateToDoList = (props) => {
     </ul>
   );
 };
-
 export default CreateToDoList;

@@ -10,7 +10,6 @@ const TodoItem = (props) => {
       className={props.todo.status ? props.classes.checked : null}
       id={props.todo.id}
       key={Math.random().toString()}
-      isediting={props.isediting}
     >
       {props.todo.text}
       <Button className={Edit.button}>
@@ -18,7 +17,7 @@ const TodoItem = (props) => {
           <FontAwesomeIcon
             icon={faEdit}
             name="checkBtn"
-            onClick={() => props.onEdit(props.todo.id)}
+            onClick={() => props.setTodoEditing(props.todo.id)}
             id={props.todo.id}
           />
         }

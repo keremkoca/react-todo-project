@@ -12,7 +12,7 @@ const AddUserInput = (props) => {
   const onSubmitForm = (event) => {
     event.preventDefault();
     if (!inputValue) return;
-    props.onSubmit(inputValue);
+    props.onFormSubmit(inputValue);
     setInputValue("");
   };
 
