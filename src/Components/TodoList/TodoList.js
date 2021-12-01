@@ -23,6 +23,7 @@ function TodoList() {
         text: inputValue,
         id: Math.random().toString(),
         status: false,
+        isEditing: false,
       });
       return updatedTodos;
     });

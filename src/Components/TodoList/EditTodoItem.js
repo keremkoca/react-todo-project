@@ -6,17 +6,27 @@ import Button from "../UI/Button";
 import { useState } from "react";
 const EditTodoItem = (props) => {
   const [editingText, setEditingText] = useState("");
-  const editHandler = (id) => {
-    const updatedTodos = [...props.todos].map((todo) => {
+  const editHandler = () => {
+    if (editingText) {
+      props.todo.text = editingText;
+      props.setTodos((prev) => [...prev]);
+    } else {
+      props.todo.isEditing = false;
+      props.setTodos((prev) => [...prev]);
+    }
+    /* const updatedTodos = [...props.todos].map((todo) => {
+      setEditingText(todo.text);
       if (todo.id === id && editingText) {
         todo.text = editingText;
       }
+      console.log(todo);
       return todo;
-    });
-    setEditingText("");
-    props.setTodoEditing(null);
-    props.setTodos(updatedTodos);
-    console.log(updatedTodos);
+      });
+      */
+    props.todo.isEditing = false;
+
+    // props.setTodos(updatedTodos);
+    //console.log(updatedTodos);
   };
   return (
     <li
@@ -36,7 +46,7 @@ const EditTodoItem = (props) => {
           <FontAwesomeIcon
             icon={faEdit}
             name="checkBtn"
-            onClick={() => editHandler(props.todo.id)}
+            onClick={editHandler}
             id={props.todo.id}
           />
         }
