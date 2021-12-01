@@ -18,23 +18,25 @@ function TodoList() {
 
   const onFormSubmit = (inputValue) => {
     setTodos((prevState) => {
-      const updatedTodos = [...prevState];
-      updatedTodos.push({
-        text: inputValue,
-        id: Math.random().toString(),
-        status: false,
-        isEditing: false,
-      });
-      return updatedTodos;
+      return [
+        ...prevState,
+        {
+          text: inputValue,
+          id: Math.random().toString(),
+          status: false,
+          isEditing: false,
+        },
+      ];
     });
   };
+  console.log(todos);
   const deleteTodo = (id) => {
     setTodos((prev) => {
       return prev.filter((todo) => todo.id !== id);
     });
   };
-  const updateTodo = (todoItem) => {
-    todoItem.status = !todoItem.status;
+  const updateTodo = (todo) => {
+    todo.status = !todo.status;
     setTodos([...todos]);
   };
 

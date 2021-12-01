@@ -7,9 +7,7 @@ import { faCheck, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 const TodoItem = (props) => {
   const editTodo = (todo) => {
     todo.isEditing = !todo.isEditing;
-    props.setTodos((prev) => {
-      return [...prev];
-    });
+    props.setTodos((prev) => [...prev]);
   };
   return (
     <li
