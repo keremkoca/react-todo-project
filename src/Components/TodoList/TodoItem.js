@@ -5,10 +5,6 @@ import Check from "../UI/CheckButton.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 const TodoItem = (props) => {
-  const editTodo = (todo) => {
-    todo.isEditing = !todo.isEditing;
-    props.setTodos((prev) => [...prev]);
-  };
   return (
     <li
       className={props.todo.status ? props.classes.checked : null}
@@ -21,7 +17,7 @@ const TodoItem = (props) => {
           <FontAwesomeIcon
             icon={faEdit}
             name="checkBtn"
-            onClick={() => editTodo(props.todo)}
+            onClick={() => props.editTodo(props.todo.id)}
             id={props.todo.id}
           />
         }
@@ -41,7 +37,7 @@ const TodoItem = (props) => {
         {
           <FontAwesomeIcon
             name="checkBtn"
-            onClick={() => props.updatetodo(props.todo)}
+            onClick={() => props.updatetodo(props.todo.id)}
             id={props.todo.id}
             icon={faCheck}
           />

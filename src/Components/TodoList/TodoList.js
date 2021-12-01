@@ -29,17 +29,29 @@ function TodoList() {
       ];
     });
   };
-  console.log(todos);
   const deleteTodo = (id) => {
     setTodos((prev) => {
       return prev.filter((todo) => todo.id !== id);
     });
   };
-  const updateTodo = (todo) => {
-    todo.status = !todo.status;
-    setTodos([...todos]);
+  const updateTodo = (id) => {
+    const updatedTodos = [...todos];
+    updatedTodos.map((todo) => {
+      if (todo.id === id) todo.status = !todo.status;
+      return todo;
+    });
+    setTodos(updatedTodos);
   };
-
+  const editTodo = (id) => {
+    const updatedTodos = [...todos];
+    updatedTodos.map((todo) => {
+      if (todo.id === id) {
+        todo.isEditing = !todo.isEditing;
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+  };
   return (
     <React.Fragment>
       <div>
@@ -50,6 +62,7 @@ function TodoList() {
         <CreateToDoList
           updateTodo={updateTodo}
           onDelete={deleteTodo}
+          editTodo={editTodo}
           setTodos={setTodos}
           todos={todos}
         />

@@ -10,6 +10,7 @@ const CreateToDoList = (props) => {
         return todo.isEditing ? (
           <EditTodoItem
             key={todo.id}
+            todos={props.todos}
             todo={todo}
             setTodos={props.setTodos}
             classes={classes}
@@ -17,10 +18,11 @@ const CreateToDoList = (props) => {
         ) : (
           <TodoItem
             key={todo.id}
+            todos={props.todos}
             todo={todo}
             classes={classes}
             updatetodo={props.updateTodo}
-            setTodos={props.setTodos}
+            editTodo={props.editTodo}
             onDelete={props.onDelete}
           />
         );
