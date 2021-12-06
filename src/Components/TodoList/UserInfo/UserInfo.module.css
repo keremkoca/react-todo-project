@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+.img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+}
+.img img {
+  height: 100px;
+  width: 100px;
+}
+.img input {
+  display: none;
+}
+.img label {
+  background-color: grey;
+}
+.info {
+  font-size: 25px;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Card from "../UI/Card";
 import AddUserInput from "./AddUserInput";
 import CreateToDoList from "./CreateToDoList";
+import UserInfo from "./UserInfo/UserInfo";
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
@@ -58,6 +59,7 @@ function TodoList() {
         <h2>REACT TODO APP</h2>
       </div>
       <Card>
+        <UserInfo></UserInfo>
         <AddUserInput onFormSubmit={onFormSubmit} />
         <CreateToDoList
           updateTodo={updateTodo}
