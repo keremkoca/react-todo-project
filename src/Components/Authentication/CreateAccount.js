@@ -19,6 +19,18 @@ const CreateAccount = (props) => {
       <Card className={classes.Card}>
         <h2>Create Account</h2>
         <form onSubmit={handleRegisterSubmit}>
+          <label>Username</label>
+          <input
+            name="username"
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            value={values.username}
+            type="text"
+          ></input>
+          {errors.username && (
+            <div className={classes.error}> {errors.username} </div>
+          )}
           <label>Email</label>
           <input
             name="email"

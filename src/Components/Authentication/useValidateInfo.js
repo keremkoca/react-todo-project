@@ -8,6 +8,11 @@ const useValidateInfo = (values) => {
   });
   const [isSubmitting, setIsSetSubmitting] = useState(false);
   const handleRegisterSubmitValidation = (values) => {
+    if (!values.username) {
+      setErrors((err) => {
+        return { ...err, username: "*required" };
+      });
+    }
     if (!values.email) {
       setErrors((err) => {
         return { ...err, email: "*required" };
@@ -37,6 +42,13 @@ const useValidateInfo = (values) => {
     } else setIsSetSubmitting(true);
   };
   const handleValidation = (name) => {
+    //Username
+    if (name === "username") {
+      if (!values.username) {
+        setErrors({ [name]: "*required" });
+      }
+    }
+
     //Email
     if (name === "email") {
       if (!values.email) {

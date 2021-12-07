@@ -6,7 +6,7 @@ function UseAPI(values) {
   const createUser = (values) => {
     axios
       .post(`${URL}/users`, {
-        name: "emcikxxx",
+        name: values.username,
         email: values.email,
         password: values.password,
       })

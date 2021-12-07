@@ -3,6 +3,7 @@ import UseAPI from "./UseAPI";
 import useValidateInfo from "./useValidateInfo";
 const useForm = () => {
   const [values, setValues] = useState({
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
