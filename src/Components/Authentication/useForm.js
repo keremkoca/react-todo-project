@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UseAPI from "./UseAPI";
 import useValidateInfo from "./useValidateInfo";
 const useForm = () => {
   const [values, setValues] = useState({
@@ -6,8 +7,16 @@ const useForm = () => {
     password: "",
     confirmPassword: "",
   });
-  const { errors, handleValidation, handleErrors, handleSubmitValidation } =
-    useValidateInfo(values);
+
+  const {
+    errors,
+    isSubmitting,
+    handleValidation,
+    handleErrors,
+    handleRegisterSubmitValidation,
+    handleLoginSubmitValidation,
+  } = useValidateInfo(values);
+  const { createUser, loginUser } = UseAPI(values);
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -15,9 +24,19 @@ const useForm = () => {
       return { ...prev, [name]: value };
     });
   };
-  const handleSubmit = (e) => {
+  const handleRegisterSubmit = (e) => {
     e.preventDefault();
-    handleSubmitValidation(values);
+    handleRegisterSubmitValidation(values);
+    if (isSubmitting) {
+      createUser(values);
+    }
+  };
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    handleLoginSubmitValidation(values);
+    if (isSubmitting) {
+      loginUser(values);
+    }
   };
   const handleFocus = (event) => {
     const name = event.target.name;
@@ -34,7 +53,8 @@ const useForm = () => {
     errors,
     values,
     handleChange,
-    handleSubmit,
+    handleRegisterSubmit,
+    handleLoginSubmit,
     handleFocus,
     handleBlur,
   };

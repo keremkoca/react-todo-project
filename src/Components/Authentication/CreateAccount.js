@@ -8,7 +8,7 @@ const CreateAccount = (props) => {
   const {
     errors,
     values,
-    handleSubmit,
+    handleRegisterSubmit,
     handleFocus,
     handleBlur,
     handleChange,
@@ -18,7 +18,7 @@ const CreateAccount = (props) => {
     <div className={classes.wrapper}>
       <Card className={classes.Card}>
         <h2>Create Account</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleRegisterSubmit}>
           <label>Email</label>
           <input
             name="email"

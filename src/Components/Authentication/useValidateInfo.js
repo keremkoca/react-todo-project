@@ -6,7 +6,8 @@ const useValidateInfo = (values) => {
     password: "",
     confirmPassword: "",
   });
-  const handleSubmitValidation = (values) => {
+  const [isSubmitting, setIsSetSubmitting] = useState(false);
+  const handleRegisterSubmitValidation = (values) => {
     if (!values.email) {
       setErrors((err) => {
         return { ...err, email: "*required" };
@@ -21,7 +22,19 @@ const useValidateInfo = (values) => {
       setErrors((err) => {
         return { ...err, confirmPassword: "*required" };
       });
+    } else setIsSetSubmitting(true);
+  };
+  const handleLoginSubmitValidation = (values) => {
+    if (!values.email) {
+      setErrors((err) => {
+        return { ...err, email: "*required" };
+      });
     }
+    if (!values.password) {
+      setErrors((err) => {
+        return { ...err, password: "*required" };
+      });
+    } else setIsSetSubmitting(true);
   };
   const handleValidation = (name) => {
     //Email
@@ -58,7 +71,14 @@ const useValidateInfo = (values) => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  return { errors, handleValidation, handleErrors, handleSubmitValidation };
+  return {
+    errors,
+    isSubmitting,
+    handleValidation,
+    handleErrors,
+    handleRegisterSubmitValidation,
+    handleLoginSubmitValidation,
+  };
 };
 
 export default useValidateInfo;
