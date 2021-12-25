@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Classes from "./UserInfo.module.css";
-function UserInfo() {
+function UserInfo(props) {
   const [userImg, setUserImg] = useState("");
   const onImgChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -15,7 +15,8 @@ function UserInfo() {
         <input id={"files"} type="file" onChange={onImgChange}></input>
       </div>
       <div className={Classes.info}>
-        <label>email : Email</label>
+        <label>username={`${props.userInfo.name}`}</label>
+        <label>email={props.userInfo.email}</label>
       </div>
     </div>
   );

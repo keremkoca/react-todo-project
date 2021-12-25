@@ -24,4 +24,6 @@
 }
 .info {
   font-size: 25px;
+  display: flex;
+  flex-direction: column;
 }

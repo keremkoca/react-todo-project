@@ -11,7 +11,6 @@ const useForm = () => {
 
   const {
     errors,
-    isSubmitting,
     handleValidation,
     handleErrors,
     handleRegisterSubmitValidation,
@@ -28,16 +27,12 @@ const useForm = () => {
   const handleRegisterSubmit = (e) => {
     e.preventDefault();
     handleRegisterSubmitValidation(values);
-    if (isSubmitting) {
-      createUser(values);
-    }
+    createUser(values);
   };
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     handleLoginSubmitValidation(values);
-    if (isSubmitting) {
-      loginUser(values);
-    }
+    loginUser(values);
   };
   const handleFocus = (event) => {
     const name = event.target.name;

@@ -70,7 +70,7 @@ const CreateAccount = (props) => {
           <Button className={classes.button} type="submit">
             Create Account
           </Button>
-          <Link className={classes.Link} to="/Login">
+          <Link className={classes.Link} to="/login">
             Already have an account?
           </Link>
         </form>

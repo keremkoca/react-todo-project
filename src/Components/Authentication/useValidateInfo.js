@@ -6,7 +6,6 @@ const useValidateInfo = (values) => {
     password: "",
     confirmPassword: "",
   });
-  const [isSubmitting, setIsSetSubmitting] = useState(false);
   const handleRegisterSubmitValidation = (values) => {
     if (!values.username) {
       setErrors((err) => {
@@ -27,7 +26,7 @@ const useValidateInfo = (values) => {
       setErrors((err) => {
         return { ...err, confirmPassword: "*required" };
       });
-    } else setIsSetSubmitting(true);
+    }
   };
   const handleLoginSubmitValidation = (values) => {
     if (!values.email) {
@@ -39,7 +38,7 @@ const useValidateInfo = (values) => {
       setErrors((err) => {
         return { ...err, password: "*required" };
       });
-    } else setIsSetSubmitting(true);
+    }
   };
   const handleValidation = (name) => {
     //Username
@@ -82,10 +81,8 @@ const useValidateInfo = (values) => {
   const handleErrors = (name) => {
     setErrors({ ...errors, [name]: "" });
   };
-
   return {
     errors,
-    isSubmitting,
     handleValidation,
     handleErrors,
     handleRegisterSubmitValidation,

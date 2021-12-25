@@ -9,7 +9,7 @@ const CreateToDoList = (props) => {
       {props.todos.map((todo) => {
         return todo.isEditing ? (
           <EditTodoItem
-            key={todo.id}
+            key={todo._id}
             todos={props.todos}
             todo={todo}
             setTodos={props.setTodos}
@@ -17,7 +17,7 @@ const CreateToDoList = (props) => {
           />
         ) : (
           <TodoItem
-            key={todo.id}
+            key={todo._id}
             todos={props.todos}
             todo={todo}
             classes={classes}

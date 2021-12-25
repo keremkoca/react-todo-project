@@ -7,17 +7,17 @@ import { faCheck, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 const TodoItem = (props) => {
   return (
     <li
-      className={props.todo.status ? props.classes.checked : null}
-      id={props.todo.id}
+      className={props.todo.completed ? props.classes.checked : null}
+      id={props.todo._id}
       key={Math.random().toString()}
     >
-      {props.todo.text}
+      {props.todo.description}
       <Button className={Edit.button}>
         {
           <FontAwesomeIcon
             icon={faEdit}
             name="checkBtn"
-            onClick={() => props.editTodo(props.todo.id)}
+            onClick={() => props.editTodo(props.todo._id)}
             id={props.todo.id}
           />
         }
@@ -26,7 +26,7 @@ const TodoItem = (props) => {
         {
           <FontAwesomeIcon
             name="deleteBtn"
-            onClick={() => props.onDelete(props.todo.id)}
+            onClick={() => props.onDelete(props.todo._id)}
             id={props.todo.id}
             icon={faTrashAlt}
           />
@@ -37,7 +37,7 @@ const TodoItem = (props) => {
         {
           <FontAwesomeIcon
             name="checkBtn"
-            onClick={() => props.updatetodo(props.todo.id)}
+            onClick={() => props.updatetodo(props.todo)}
             id={props.todo.id}
             icon={faCheck}
           />
