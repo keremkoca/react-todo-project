@@ -1,31 +1,65 @@
 import classes from "./CreateAccount.module.css";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
-import { Link } from "react-router-dom";
 import useForm from "./useForm";
+import { AuthContext } from "../../App";
+import { useContext, useState } from "react";
+import axios from "axios";
+const URL = "https://emircan-task-manager.herokuapp.com";
 
-const CreateAccount = (props) => {
-  const {
-    errors,
-    values,
-    handleRegisterSubmit,
-    handleFocus,
-    handleBlur,
-    handleChange,
-  } = useForm();
+const initialState = {
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  isSubmitting: false,
+  errorMessage: null,
+};
+
+const CreateAccount = () => {
+  const { dispatch } = useContext(AuthContext);
+  const [data, setData] = useState(initialState);
+  const { errors, handleFocus, handleBlur } = useForm(data);
+
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    setData({
+      ...data,
+      isSubmitting: true,
+      errorMessage: null,
+    });
+    axios
+      .post(`${URL}/users`, {
+        name: data.username,
+        email: data.email,
+        password: data.password,
+      })
+      .then((response) => {
+        dispatch({
+          type: "REGISTER TO LOGIN",
+        });
+      });
+  };
 
   return (
     <div className={classes.wrapper}>
       <Card className={classes.Card}>
         <h2>Create Account</h2>
-        <form onSubmit={handleRegisterSubmit}>
+        <form onSubmit={handleFormSubmit}>
           <label>Username</label>
           <input
             name="username"
-            onChange={handleChange}
+            onChange={handleInputChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            value={values.username}
+            value={data.username}
             type="text"
           ></input>
           {errors.username && (
@@ -34,10 +68,10 @@ const CreateAccount = (props) => {
           <label>Email</label>
           <input
             name="email"
-            onChange={handleChange}
+            onChange={handleInputChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            value={values.email}
+            value={data.email}
             type="email"
           ></input>
           {errors.email && (
@@ -46,8 +80,8 @@ const CreateAccount = (props) => {
           <label>Password</label>
           <input
             name="password"
-            onChange={handleChange}
-            value={values.password}
+            onChange={handleInputChange}
+            value={data.password}
             onFocus={handleFocus}
             onBlur={handleBlur}
             type="password"
@@ -58,8 +92,8 @@ const CreateAccount = (props) => {
           <label>Confirm Password</label>
           <input
             name="confirmPassword"
-            onChange={handleChange}
-            value={values.confirmPassword}
+            onChange={handleInputChange}
+            value={data.confirmPassword}
             onFocus={handleFocus}
             onBlur={handleBlur}
             type="password"
@@ -67,12 +101,22 @@ const CreateAccount = (props) => {
           {errors.confirmPassword && (
             <div className={classes.error}> {errors.confirmPassword} </div>
           )}
-          <Button className={classes.button} type="submit">
-            Create Account
+          <Button
+            disabled={data.isSubmitting}
+            className={classes.button}
+            type="submit"
+          >
+            {!data.isSubmitting ? "Create Account" : "Loading..."}
           </Button>
-          <Link className={classes.Link} to="/login">
+          <span
+            onClick={() => {
+              dispatch({
+                type: "REGISTER TO LOGIN",
+              });
+            }}
+          >
             Already have an account?
-          </Link>
+          </span>
         </form>
       </Card>
     </div>

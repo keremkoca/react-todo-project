@@ -2,30 +2,66 @@ import classes from "./Login.module.css";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import React from "react";
-import { Link } from "react-router-dom";
 import useForm from "./useForm";
-const Login = (props) => {
-  const {
-    errors,
-    values,
-    handleLoginSubmit,
-    handleFocus,
-    handleBlur,
-    handleChange,
-  } = useForm();
+import { AuthContext } from "../../App";
+import { useState, useContext } from "react";
+import axios from "axios";
+const URL = "https://emircan-task-manager.herokuapp.com";
+const initialState = {
+  email: "",
+  password: "",
+  isSubmitting: false,
+  errorMessage: null,
+};
+
+const Login = () => {
+  const { dispatch } = useContext(AuthContext);
+  const [data, setData] = useState(initialState);
+  const handleInputChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
+  };
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    setData({
+      ...data,
+      isSubmitting: true,
+      errorMessage: null,
+    });
+    axios
+      .post(`${URL}/users/login`, {
+        email: data.email,
+        password: data.password,
+      })
+      .then((response) => {
+        dispatch({
+          type: "LOGIN",
+          payload: response,
+        });
+      })
+      .catch((error) => {
+        setData({
+          ...data,
+          errorMessage: error.message || error.statusText,
+        });
+      });
+  };
+  const { errors, handleFocus, handleBlur } = useForm(data);
   return (
     <div className={classes.wrapper}>
       <Card className={classes.Card}>
         <h2>Login</h2>
-        <form onSubmit={handleLoginSubmit}>
+        <form onSubmit={handleFormSubmit}>
           <label htmlFor="email">Email</label>
           <input
             type="email"
             name="email"
-            onChange={handleChange}
+            onChange={handleInputChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            value={values.email}
+            value={data.email}
           ></input>
           {errors.email && (
             <div className={classes.error}> {errors.email} </div>
@@ -33,8 +69,8 @@ const Login = (props) => {
           <label htmlFor="password">Password</label>
           <input
             name="password"
-            onChange={handleChange}
-            value={values.password}
+            onChange={handleInputChange}
+            value={data.password}
             onFocus={handleFocus}
             onBlur={handleBlur}
             type="password"
@@ -42,12 +78,26 @@ const Login = (props) => {
           {errors.password && (
             <div className={classes.error}> {errors.password} </div>
           )}
-          <Button className={classes.button} type="submit">
-            Login
+          {data.errorMessage && (
+            <div className={classes.error}> {data.errorMessage} </div>
+          )}
+          <Button
+            disabled={data.isSubmitting}
+            className={classes.button}
+            type="submit"
+          >
+            {data.isSubmitting ? "...Loading" : "Login"}
           </Button>
-          <Link className={classes.Link} to="/">
-            Create an Account
-          </Link>
+          <span
+            onClick={() => {
+              console.log("sik");
+              dispatch({
+                type: "LOGIN TO REGISTER",
+              });
+            }}
+          >
+            Dont have account? Sign up
+          </span>
         </form>
       </Card>
     </div>

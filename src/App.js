@@ -7,7 +7,8 @@ import CreateAccount from "./Components/Authentication/CreateAccount";
 export const AuthContext = React.createContext();
 const initialState = {
   isAuthenticated: false,
-  isRegistering: false,
+  isRegistered: true,
+  hasAccount: true,
   user: null,
   token: null,
 };
@@ -19,22 +20,30 @@ const reducer = (action, state) => {
       return {
         ...state,
         isAuthenticated: true,
-        isRegistering: false,
+        isRegistered: true,
         user: action.payload.user,
         token: action.payload.token,
       };
-    case "REGISTER":
+    case "LOGIN TO REGISTER":
       return {
         ...state,
         isAuthenticated: false,
-        isRegistering: true,
+        isRegistered: false,
+        hasAccount: false,
+      };
+    case "REGISTER TO LOGIN":
+      return {
+        ...state,
+        isAuthenticated: false,
+        isRegistered: true,
+        hasAccount: true,
       };
     case "LOGOUT":
       localStorage.clear();
       return {
         ...state,
         isAuthenticated: true,
-        isRegistering: false,
+        isRegistered: true,
         user: action.payload.user,
         token: action.payload.token,
       };
@@ -52,9 +61,9 @@ function App() {
       }}
     >
       <div className="App">
-        {!state.isAuthenticated ? (
+        {!state.isAuthenticated && state.hasAccount ? (
           <Login />
-        ) : state.isRegistering ? (
+        ) : !state.hasAccount && !state.isRegistered ? (
           <CreateAccount />
         ) : (
           <TodoList></TodoList>

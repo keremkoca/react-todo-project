@@ -1,40 +1,40 @@
 import { useState } from "react";
 
-const useValidateInfo = (values) => {
+const useValidateInfo = (data) => {
   const [errors, setErrors] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const handleRegisterSubmitValidation = (values) => {
-    if (!values.username) {
+  const handleRegisterSubmitValidation = (data) => {
+    if (!data.username) {
       setErrors((err) => {
         return { ...err, username: "*required" };
       });
     }
-    if (!values.email) {
+    if (!data.email) {
       setErrors((err) => {
         return { ...err, email: "*required" };
       });
     }
-    if (!values.password) {
+    if (!data.password) {
       setErrors((err) => {
         return { ...err, password: "*required" };
       });
     }
-    if (!values.confirmPassword) {
+    if (!data.confirmPassword) {
       setErrors((err) => {
         return { ...err, confirmPassword: "*required" };
       });
     }
   };
-  const handleLoginSubmitValidation = (values) => {
-    if (!values.email) {
+  const handleLoginSubmitValidation = (data) => {
+    if (!data.email) {
       setErrors((err) => {
         return { ...err, email: "*required" };
       });
     }
-    if (!values.password) {
+    if (!data.password) {
       setErrors((err) => {
         return { ...err, password: "*required" };
       });
@@ -43,37 +43,34 @@ const useValidateInfo = (values) => {
   const handleValidation = (name) => {
     //Username
     if (name === "username") {
-      if (!values.username) {
+      if (!data.username) {
         setErrors({ [name]: "*required" });
       }
     }
 
     //Email
     if (name === "email") {
-      if (!values.email) {
+      if (!data.email) {
         setErrors({ [name]: "*required" });
-      } else if (!values.email.includes("@")) {
+      } else if (!data.email.includes("@")) {
         setErrors({ [name]: "*invalid email" });
       }
     }
     //Password
     if (name === "password") {
-      if (!values.password) {
+      if (!data.password) {
         setErrors({ [name]: "required" });
       }
-      if (
-        values.confirmPassword &&
-        values.password !== values.confirmPassword
-      ) {
+      if (data.confirmPassword && data.password !== data.confirmPassword) {
         setErrors({ [name]: "passwords do not match" });
       }
     }
     if (name === "confirmPassword") {
-      if (!values.confirmPassword) {
+      if (!data.confirmPassword) {
         //ConfirmPassword
         setErrors({ [name]: "confirm is required" });
       }
-      if (values.password !== values.confirmPassword) {
+      if (data.password !== data.confirmPassword) {
         setErrors({ [name]: "passwords do not match" });
       }
     }

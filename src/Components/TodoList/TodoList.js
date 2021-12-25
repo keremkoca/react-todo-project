@@ -1,65 +1,68 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useReducer, useEffect, useContext } from "react";
 import Card from "../UI/Card";
 import AddUserInput from "./AddUserInput";
 import CreateToDoList from "./CreateToDoList";
 import UserInfo from "./UserInfo/UserInfo";
+import { AuthContext } from "../../App";
 const URL = "https://emircan-task-manager.herokuapp.com";
+const initialState = {
+  todos: [],
+  isFetching: false,
+  hasError: false,
+};
+const reducer = (action, state) => {
+  switch (action.type) {
+    //Authentication
+    case "GET_USER":
+      return {
+        ...state,
+        isFetching: true,
+        hasError: false,
+      };
+    case "GET_USER_SUCCES":
+      return {
+        ...state,
+        isFetching: false,
+        hasError: false,
+        todos: action.payload,
+      };
+    case "GET_USER_ERROR":
+      return {
+        ...state,
+        isFetching: false,
+        hasError: true,
+      };
+    //
+
+    default:
+      return state;
+  }
+};
 
 function TodoList() {
-  const [todos, setTodos] = useState([]);
-  const [userInfo, setUserInfo] = useState("");
+  const { AuthState } = useContext(AuthContext);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const[]
   useEffect(() => {
-    const userToken = localStorage.getItem("userToken");
-    console.log(userToken);
+    dispatch({
+      type: "GET_USER",
+    });
     axios
-      .get(`${URL}/users/me`, {
-        headers: { Authorization: `Bearer ${userToken}` },
-      })
-      .then(function (response) {
-        setUserInfo(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  }, []);
-  useEffect(() => {
-    const userToken = localStorage.getItem("userToken");
-    axios
-      .get(`${URL}/tasks`, {
-        headers: { Authorization: `Bearer ${userToken}` },
-      })
-      .then(function (response) {
-        setTodos(() => {
-          return [...response.data];
-        });
-        setTodos((todos) => {
-          todos.map((todo) => (todo.isEditing = false));
-          console.log(todos);
-          return todos;
+      .get(`${URL}/tasks`, { headers: `Bearer ${AuthState.token}` })
+      .then((response) => {
+        dispatch({
+          type: "USER_SUCCES",
+          payload: response,
         });
       })
-      .catch(function (error) {
-        // handle error
+      .catch((error) => {
         console.log(error);
-      })
-      .then(function () {
-        // always executed
+        dispatch({
+          type: "USER_ERROR",
+        });
       });
-  }, []);
-  // useEffect(() => {
-  //   const _todos = localStorage.getItem("todos");
-  //   const loadedTodos = JSON.parse(_todos);
-  //   !loadedTodos ? setTodos([]) : setTodos(loadedTodos);
-  // }, []);
-  // useEffect(() => {
-  //   const _todos = JSON.stringify(todos);
-  //   localStorage.setItem("todos", _todos);
-  // }, [todos]);
+  }, [AuthState.token]);
   const onFormSubmit = (inputValue) => {
     const userToken = localStorage.getItem("userToken");
     axios
@@ -145,7 +148,7 @@ function TodoList() {
           onDelete={deleteTodo}
           editTodo={editTodo}
           setTodos={setTodos}
-          todos={todos}
+          todos={state.todos}
         />
       </Card>
     </React.Fragment>
