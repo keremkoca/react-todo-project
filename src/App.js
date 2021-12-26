@@ -14,11 +14,9 @@ const initialState = {
   token: null,
 };
 const reducer = (action, state) => {
-  console.log("object");
   switch (action.type) {
     case "LOGIN":
       localStorage.setItem("token", action.payload.token);
-      console.log("object1");
       return {
         ...state,
         isAuthenticated: true,
@@ -57,6 +55,7 @@ const reducer = (action, state) => {
 };
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  console.log(state.isAuthenticated, "kerem");
   return (
     <AuthContext.Provider
       value={{
