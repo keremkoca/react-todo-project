@@ -15,8 +15,8 @@ function UserInfo(props) {
         <input id={"files"} type="file" onChange={onImgChange}></input>
       </div>
       <div className={Classes.info}>
-        <label>username={`${props.userInfo.name}`}</label>
-        <label>email={props.userInfo.email}</label>
+        <label>username={props.username}</label>
+        <label>email={props.email}</label>
       </div>
     </div>
   );

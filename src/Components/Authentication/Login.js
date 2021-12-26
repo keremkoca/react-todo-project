@@ -13,7 +13,6 @@ const initialState = {
   isSubmitting: false,
   errorMessage: null,
 };
-
 const Login = () => {
   const { dispatch } = useContext(AuthContext);
   const [data, setData] = useState(initialState);
@@ -38,7 +37,12 @@ const Login = () => {
       .then((response) => {
         dispatch({
           type: "LOGIN",
-          payload: response,
+          payload: response.data,
+        });
+        console.log(response.data);
+        setData({
+          ...data,
+          isSubmitting: false,
         });
       })
       .catch((error) => {
@@ -90,7 +94,6 @@ const Login = () => {
           </Button>
           <span
             onClick={() => {
-              console.log("sik");
               dispatch({
                 type: "LOGIN TO REGISTER",
               });

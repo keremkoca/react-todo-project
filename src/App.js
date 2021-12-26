@@ -9,29 +9,32 @@ const initialState = {
   isAuthenticated: false,
   isRegistered: true,
   hasAccount: true,
-  user: null,
+  username: null,
+  email: null,
   token: null,
 };
 const reducer = (action, state) => {
+  console.log("object");
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("user", action.payload.user);
       localStorage.setItem("token", action.payload.token);
+      console.log("object1");
       return {
         ...state,
         isAuthenticated: true,
         isRegistered: true,
-        user: action.payload.user,
+        username: action.payload.user.name,
+        email: action.payload.user.email,
         token: action.payload.token,
       };
-    case "LOGIN TO REGISTER":
+    case "LOGIN_TO_REGISTER":
       return {
         ...state,
         isAuthenticated: false,
         isRegistered: false,
         hasAccount: false,
       };
-    case "REGISTER TO LOGIN":
+    case "REGISTER_TO_LOGIN":
       return {
         ...state,
         isAuthenticated: false,
@@ -48,6 +51,7 @@ const reducer = (action, state) => {
         token: action.payload.token,
       };
     default:
+      console.log(state);
       return state;
   }
 };
@@ -61,13 +65,7 @@ function App() {
       }}
     >
       <div className="App">
-        {!state.isAuthenticated && state.hasAccount ? (
-          <Login />
-        ) : !state.hasAccount && !state.isRegistered ? (
-          <CreateAccount />
-        ) : (
-          <TodoList></TodoList>
-        )}
+        {!state.isAuthenticated ? <Login /> : <TodoList />}
       </div>
     </AuthContext.Provider>
   );

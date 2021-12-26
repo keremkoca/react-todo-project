@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useReducer, useEffect, useContext } from "react";
+import React, { useReducer, useEffect, useContext, useState } from "react";
 import Card from "../UI/Card";
 import AddUserInput from "./AddUserInput";
 import CreateToDoList from "./CreateToDoList";
@@ -41,20 +41,25 @@ const reducer = (action, state) => {
 };
 
 function TodoList() {
-  const { AuthState } = useContext(AuthContext);
+  const { state: authState } = useContext(AuthContext);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const[]
+  const [todos, setTodos] = useState([]);
+
   useEffect(() => {
     dispatch({
       type: "GET_USER",
     });
     axios
-      .get(`${URL}/tasks`, { headers: `Bearer ${AuthState.token}` })
+      .get(`${URL}/tasks`, {
+        headers: { Authorization: `Bearer ${authState.token}` },
+      })
       .then((response) => {
+        console.log(response.data);
         dispatch({
           type: "USER_SUCCES",
-          payload: response,
+          payload: response.data,
         });
+        setTodos([...response.data]);
       })
       .catch((error) => {
         console.log(error);
@@ -62,7 +67,7 @@ function TodoList() {
           type: "USER_ERROR",
         });
       });
-  }, [AuthState.token]);
+  }, [authState.token]);
   const onFormSubmit = (inputValue) => {
     const userToken = localStorage.getItem("userToken");
     axios
@@ -135,20 +140,25 @@ function TodoList() {
     });
     setTodos(updatedTodos);
   };
+  console.log(todos);
+  console.log(state);
   return (
     <React.Fragment>
       <div>
         <h2>REACT TODO APP</h2>
       </div>
       <Card>
-        <UserInfo userInfo={userInfo}></UserInfo>
+        <UserInfo
+          email={authState.email}
+          username={authState.username}
+        ></UserInfo>
         <AddUserInput onFormSubmit={onFormSubmit} />
         <CreateToDoList
           updateTodo={updateTodo}
           onDelete={deleteTodo}
           editTodo={editTodo}
           setTodos={setTodos}
-          todos={state.todos}
+          todos={todos}
         />
       </Card>
     </React.Fragment>
