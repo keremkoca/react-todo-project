@@ -1,12 +1,14 @@
 import classes from "./CreateTodoList.module.css";
 import EditTodoItem from "./EditTodoItem";
 import TodoItem from "./TodoItem";
-import React from "react";
+import React, { useContext } from "react";
+import { TodosContext } from "./TodoList";
 
 const CreateToDoList = (props) => {
+  const { myTodos, todosDispatch } = useContext(TodosContext);
   return (
     <ul className={classes.ul}>
-      {props.todos.map((todo) => {
+      {myTodos.map((todo) => {
         return todo.isEditing ? (
           <EditTodoItem
             key={todo._id}
@@ -18,7 +20,6 @@ const CreateToDoList = (props) => {
         ) : (
           <TodoItem
             key={todo._id}
-            todos={props.todos}
             todo={todo}
             classes={classes}
             updatetodo={props.updateTodo}

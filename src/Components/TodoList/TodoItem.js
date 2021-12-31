@@ -4,7 +4,10 @@ import Edit from "../UI/EditButton.module.css";
 import Check from "../UI/CheckButton.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { TodosContext } from "./TodoList";
+import { useContext } from "react";
 const TodoItem = (props) => {
+  const { myTodos, todosDispatch } = useContext(TodosContext);
   return (
     <li
       className={props.todo.completed ? props.classes.checked : null}

@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Edit from "../UI/EditButton.module.css";
 import Button from "../UI/Button";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import { TodosContext } from "./TodoList";
 const URL = "https://emircan-task-manager.herokuapp.com";
 const EditTodoItem = (props) => {
   const [editingText, setEditingText] = useState("");
+  const { myTodos, todosDispatch } = useContext(TodosContext);
   const editHandler = (id) => {
     if (editingText && editingText !== props.todo.description) {
       const userToken = localStorage.getItem("token");
@@ -20,19 +22,10 @@ const EditTodoItem = (props) => {
           { headers: { Authorization: `Bearer ${userToken}` } }
         )
         .then((response) => {
-          const updatedTodos = [...props.todos];
-          updatedTodos.map((todo) => {
-            if (todo._id === response.data._id && response.data.description) {
-              todo.description = response.data.description;
-              todo.isEditing = !todo.isEditing;
-            }
-            if (!response.data.description) {
-              todo.isEditing = !todo.isEditing;
-            }
-            return todo;
+          todosDispatch({
+            type: "TODOS/CHANGE_DESCRIPTION",
+            payload: response.data,
           });
-
-          props.setTodos(updatedTodos);
         })
         .catch((error) => console.log(error));
     } else {
@@ -41,6 +34,7 @@ const EditTodoItem = (props) => {
         if (todo._id === props.todo._id) {
           return (todo.isEditing = false);
         }
+        return todo;
       });
       props.setTodos(updatedTodos);
     }

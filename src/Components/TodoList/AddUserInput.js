@@ -1,9 +1,11 @@
 import classes from "./AddUserInput.module.css";
 import Button from "../UI/Button";
 import submit from "../UI/SubmitButton.module.css";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { TodosContext } from "./TodoList";
 
 const AddUserInput = (props) => {
+  const { myTodos, todosDispatch } = useContext(TodosContext);
   const inputValue = useRef("");
 
   const onSubmitForm = (event) => {
