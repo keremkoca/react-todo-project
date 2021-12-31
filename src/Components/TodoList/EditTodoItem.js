@@ -9,45 +9,41 @@ const URL = "https://emircan-task-manager.herokuapp.com";
 const EditTodoItem = (props) => {
   const [editingText, setEditingText] = useState("");
   const editHandler = (id) => {
-    const userToken = localStorage.getItem("userToken");
-    console.log(editingText);
-    axios
-      .patch(
-        `${URL}/tasks/${id}`,
-        {
-          description: editingText,
-        },
-        { headers: { Authorization: `Bearer ${userToken}` } }
-      )
-      .then((response) => {
-        const updatedTodos = [...props.todos];
-        updatedTodos.map((todo) => {
-          if (todo._id === response.data._id && response.data.description) {
-            todo.description = response.data.description;
-            todo.isEditing = !todo.isEditing;
-          }
-          if (!response.data.description) {
-            todo.isEditing = !todo.isEditing;
-          }
-          return todo;
-        });
+    if (editingText && editingText !== props.todo.description) {
+      const userToken = localStorage.getItem("token");
+      axios
+        .patch(
+          `${URL}/tasks/${id}`,
+          {
+            description: editingText,
+          },
+          { headers: { Authorization: `Bearer ${userToken}` } }
+        )
+        .then((response) => {
+          const updatedTodos = [...props.todos];
+          updatedTodos.map((todo) => {
+            if (todo._id === response.data._id && response.data.description) {
+              todo.description = response.data.description;
+              todo.isEditing = !todo.isEditing;
+            }
+            if (!response.data.description) {
+              todo.isEditing = !todo.isEditing;
+            }
+            return todo;
+          });
 
-        props.setTodos(updatedTodos);
-      })
-      .catch((error) => console.log(error));
-
-    /* const updatedTodos = [...props.todos].map((todo) => {
-      setEditingText(todo.text);
-      if (todo.id === id && editingText) {
-        todo.text = editingText;
-      }
-      console.log(todo);
-      return todo;
+          props.setTodos(updatedTodos);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      const updatedTodos = [...props.todos];
+      updatedTodos.map((todo) => {
+        if (todo._id === props.todo._id) {
+          return (todo.isEditing = false);
+        }
       });
-      */
-
-    // props.setTodos(updatedTodos);
-    //console.log(updatedTodos);
+      props.setTodos(updatedTodos);
+    }
   };
   return (
     <li

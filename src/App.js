@@ -1,6 +1,7 @@
 import "./App.css";
 import React from "react";
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TodoList from "./Components/TodoList/TodoList";
 import Login from "./Components/Authentication/Login";
 import CreateAccount from "./Components/Authentication/CreateAccount";
@@ -8,15 +9,17 @@ export const AuthContext = React.createContext();
 const initialState = {
   isAuthenticated: false,
   isRegistered: true,
-  hasAccount: true,
   username: null,
   email: null,
   token: null,
+  userID: null,
 };
-const reducer = (action, state) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
       localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      console.log(action.payload.user);
       return {
         ...state,
         isAuthenticated: true,
@@ -24,38 +27,49 @@ const reducer = (action, state) => {
         username: action.payload.user.name,
         email: action.payload.user.email,
         token: action.payload.token,
+        userID: action.payload.user._id,
       };
-    case "LOGIN_TO_REGISTER":
-      return {
-        ...state,
-        isAuthenticated: false,
-        isRegistered: false,
-        hasAccount: false,
-      };
-    case "REGISTER_TO_LOGIN":
+    case "REGISTER":
       return {
         ...state,
         isAuthenticated: false,
         isRegistered: true,
-        hasAccount: true,
       };
     case "LOGOUT":
       localStorage.clear();
       return {
         ...state,
-        isAuthenticated: true,
-        isRegistered: true,
-        user: action.payload.user,
-        token: action.payload.token,
+        isAuthenticated: false,
       };
+    case "AUTHED":
+      const userToken = localStorage.getItem("token");
+      const user = JSON.parse(localStorage.getItem("user"));
+      console.log(state.token);
+      if (userToken)
+        return {
+          ...state,
+          isAuthenticated: true,
+          username: user.name,
+          email: user.email,
+          token: userToken,
+          userID: user._id,
+        };
+      else {
+        return state;
+      }
+
     default:
-      console.log(state);
       return state;
   }
 };
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state.isAuthenticated, "kerem");
+  useEffect(() => {
+    dispatch({
+      type: "AUTHED",
+    });
+  }, [state.token]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -64,7 +78,15 @@ function App() {
       }}
     >
       <div className="App">
-        {!state.isAuthenticated ? <Login /> : <TodoList />}
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={!state.isAuthenticated ? <Login /> : <TodoList />}
+            ></Route>
+            <Route path="/register" element={<CreateAccount />}></Route>
+          </Routes>
+        </BrowserRouter>
       </div>
     </AuthContext.Provider>
   );

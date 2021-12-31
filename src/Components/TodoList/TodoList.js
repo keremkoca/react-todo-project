@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useReducer, useEffect, useContext, useState } from "react";
 import Card from "../UI/Card";
+import classes from "./Todolist.module.css";
 import AddUserInput from "./AddUserInput";
 import CreateToDoList from "./CreateToDoList";
 import UserInfo from "./UserInfo/UserInfo";
+import Header from "./Header";
 import { AuthContext } from "../../App";
 const URL = "https://emircan-task-manager.herokuapp.com";
 const initialState = {
@@ -34,16 +36,15 @@ const reducer = (action, state) => {
         hasError: true,
       };
     //
-
     default:
       return state;
   }
 };
 
 function TodoList() {
-  const { state: authState } = useContext(AuthContext);
+  const { state: authState, dispatch: authDispatch } = useContext(AuthContext);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(state.todos);
 
   useEffect(() => {
     dispatch({
@@ -54,7 +55,6 @@ function TodoList() {
         headers: { Authorization: `Bearer ${authState.token}` },
       })
       .then((response) => {
-        console.log(response.data);
         dispatch({
           type: "USER_SUCCES",
           payload: response.data,
@@ -66,17 +66,19 @@ function TodoList() {
         dispatch({
           type: "USER_ERROR",
         });
+        authDispatch({
+          type: "LOGOUT",
+        });
       });
   }, [authState.token]);
   const onFormSubmit = (inputValue) => {
-    const userToken = localStorage.getItem("userToken");
     axios
       .post(
         `${URL}/tasks`,
         { description: inputValue, completed: false },
         {
           headers: {
-            Authorization: `Bearer ${userToken}`,
+            Authorization: `Bearer ${authState.token}`,
           },
         }
       )
@@ -91,10 +93,9 @@ function TodoList() {
       });
   };
   const deleteTodo = (id) => {
-    const userToken = localStorage.getItem("userToken");
     axios
       .delete(`${URL}/tasks/${id}`, {
-        headers: { Authorization: `Bearer ${userToken}` },
+        headers: { Authorization: `Bearer ${authState.token}` },
       })
       .then((response) => {
         const updatedTodos = [...todos].filter((todo) => {
@@ -107,14 +108,13 @@ function TodoList() {
       });
   };
   const updateTodo = (todo) => {
-    const userToken = localStorage.getItem("userToken");
     axios
       .patch(
         `${URL}/tasks/${todo._id}`,
         {
           completed: !todo.completed,
         },
-        { headers: { Authorization: `Bearer ${userToken}` } }
+        { headers: { Authorization: `Bearer ${authState.token}` } }
       )
       .then((response) => {
         const updatedTodos = [...todos];
@@ -140,18 +140,10 @@ function TodoList() {
     });
     setTodos(updatedTodos);
   };
-  console.log(todos);
-  console.log(state);
   return (
     <React.Fragment>
-      <div>
-        <h2>REACT TODO APP</h2>
-      </div>
-      <Card>
-        <UserInfo
-          email={authState.email}
-          username={authState.username}
-        ></UserInfo>
+      <Header></Header>
+      <Card className={classes.container}>
         <AddUserInput onFormSubmit={onFormSubmit} />
         <CreateToDoList
           updateTodo={updateTodo}

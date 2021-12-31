@@ -5,6 +5,7 @@ import useForm from "./useForm";
 import { AuthContext } from "../../App";
 import { useContext, useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 const URL = "https://emircan-task-manager.herokuapp.com";
 
 const initialState = {
@@ -14,13 +15,14 @@ const initialState = {
   confirmPassword: "",
   isSubmitting: false,
   errorMessage: null,
+  successMessage: null,
 };
 
 const CreateAccount = () => {
   const { dispatch } = useContext(AuthContext);
   const [data, setData] = useState(initialState);
   const { errors, handleFocus, handleBlur } = useForm(data);
-
+  const navigate = useNavigate();
   const handleInputChange = (event) => {
     setData({
       ...data,
@@ -42,8 +44,21 @@ const CreateAccount = () => {
         password: data.password,
       })
       .then((response) => {
+        setData({
+          ...data,
+          isSubmitting: false,
+          successMessage: "succesfuly created",
+        });
         dispatch({
-          type: "REGISTER TO LOGIN",
+          type: "REGISTER",
+        });
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        setData({
+          ...data,
+          errorMessage: error.message,
         });
       });
   };
@@ -101,6 +116,9 @@ const CreateAccount = () => {
           {errors.confirmPassword && (
             <div className={classes.error}> {errors.confirmPassword} </div>
           )}
+          {data.successMessage && (
+            <div className={classes.success}> {data.successMessage} </div>
+          )}
           <Button
             disabled={data.isSubmitting}
             className={classes.button}
@@ -108,16 +126,8 @@ const CreateAccount = () => {
           >
             {!data.isSubmitting ? "Create Account" : "Loading..."}
           </Button>
-          <span
-            onClick={() => {
-              dispatch({
-                type: "REGISTER TO LOGIN",
-              });
-            }}
-          >
-            Already have an account?
-          </span>
         </form>
+        <Link to="/">Already have an account?Sign in</Link>
       </Card>
     </div>
   );

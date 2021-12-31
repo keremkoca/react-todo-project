@@ -5,6 +5,7 @@ import React from "react";
 import useForm from "./useForm";
 import { AuthContext } from "../../App";
 import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 const URL = "https://emircan-task-manager.herokuapp.com";
 const initialState = {
@@ -35,14 +36,13 @@ const Login = () => {
         password: data.password,
       })
       .then((response) => {
-        dispatch({
-          type: "LOGIN",
-          payload: response.data,
-        });
-        console.log(response.data);
         setData({
           ...data,
           isSubmitting: false,
+        });
+        dispatch({
+          type: "LOGIN",
+          payload: response.data,
         });
       })
       .catch((error) => {
@@ -92,16 +92,8 @@ const Login = () => {
           >
             {data.isSubmitting ? "...Loading" : "Login"}
           </Button>
-          <span
-            onClick={() => {
-              dispatch({
-                type: "LOGIN TO REGISTER",
-              });
-            }}
-          >
-            Dont have account? Sign up
-          </span>
         </form>
+        <Link to="/register">Dont have account?Sign up</Link>
       </Card>
     </div>
   );
